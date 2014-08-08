@@ -1,6 +1,6 @@
 {
-  "name": "blog-parser-widget",
-  "version": "0.0.0",
+  "name": "federated-dashboard-blog-parser-widget",
+  "version": "0.0.1",
   "ignore": [
     ".tmp",
     "spec",
