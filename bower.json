@@ -1,5 +1,5 @@
 {
-  "name": "blog-scrapper-widget",
+  "name": "blog-parser-widget",
   "version": "0.0.0",
   "ignore": [
     ".tmp",
