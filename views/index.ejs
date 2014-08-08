@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+  <title><%= title %></title>
+  <script src="/bower_components/underscore/underscore.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/dist/blog-scrapper-widget.js"></script>
+  </head>
+  <body>
+    <h1>Blog Parser Widget</h1>
+    <div data-id="widget-display-1"></div>
+    <div data-id="widget-display-2"></div>
+    <script>
+      Blog.Controller.setupWidgetIn({container: '[data-id=widget-display-1]', defaultValue: "http://blog.8thlight.com/feed/atom.xml"})
+    </script>
+  </body>
+</html>
