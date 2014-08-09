@@ -65,6 +65,22 @@
 }).call(this);
 
 (function() {
+  namespace('Blog');
+
+  Blog.Display = (function() {
+    function Display() {}
+
+    Display.generateLogo = function(settings) {
+      return "<i class=\"fa fa-book " + settings["class"] + "\" data-id=\"" + settings.dataId + "\"></i>";
+    };
+
+    return Display;
+
+  })();
+
+}).call(this);
+
+(function() {
   namespace('Blog.Widgets');
 
   Blog.Widgets.Api = (function() {
