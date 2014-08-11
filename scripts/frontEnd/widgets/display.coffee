@@ -1,8 +1,9 @@
 namespace('Blog.Widgets')
 
 class Blog.Widgets.Display
-  constructor: (container) ->
+  constructor: (container, numberOfPosts) ->
     @container = container
+    @numberOfPosts = numberOfPosts
 
   setupWidget: ->
     widgetHtml = Blog.Widgets.Templates.renderForm()
@@ -13,7 +14,7 @@ class Blog.Widgets.Display
 
   showPosts: (posts) ->
     formatedPosts =  @formatAllPosts(posts)
-    postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts)
+    postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, @numberOfPosts)
     $("#{@container} [data-id=blog-output]").html(postsHtml)
 
   formatAllPosts: (posts) ->

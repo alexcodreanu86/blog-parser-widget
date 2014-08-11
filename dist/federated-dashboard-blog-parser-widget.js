@@ -109,7 +109,7 @@
     function Controller(settings) {
       this.container = settings.container;
       this.defaultValue = settings.defaultValue;
-      this.display = new Blog.Widgets.Display(this.container);
+      this.display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts);
       this.activeStatus = false;
     }
 
@@ -194,8 +194,9 @@
   namespace('Blog.Widgets');
 
   Blog.Widgets.Display = (function() {
-    function Display(container) {
+    function Display(container, numberOfPosts) {
       this.container = container;
+      this.numberOfPosts = numberOfPosts;
     }
 
     Display.prototype.setupWidget = function() {
@@ -211,7 +212,7 @@
     Display.prototype.showPosts = function(posts) {
       var formatedPosts, postsHtml;
       formatedPosts = this.formatAllPosts(posts);
-      postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts);
+      postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, this.numberOfPosts);
       return $("" + this.container + " [data-id=blog-output]").html(postsHtml);
     };
 
@@ -281,9 +282,16 @@
       return _.template("<div class=\"widget\" data-id=\"blog-widget-wrapper\">\n  <div class=\"widget-header\">\n    <h2 class=\"widget-title\">Blog Posts</h2>\n    <span class='widget-close' data-id='blog-close'>×</span>\n      <div class=\"widget-form\" data-id=\"blog-form\">\n        <input name=\"blog-search\" type=\"text\" autofocus=\"true\">\n        <button id=\"blog\" data-id=\"blog-button\">Search blog</button><br>\n      </div>\n    </div>\n  <div class=\"widget-body\" data-id=\"blog-output\"></div>\n</div>");
     };
 
-    Templates.renderPosts = function(posts) {
-      return _.template("<% for (var i = 0; i < posts.length; i++){ %>\n  <div class=\"blog-post\">\n    <div class=\"blog-image-container\">\n      <img class=\"blog-image\" src=\"<%= posts[i].imageSrc %>\" alt=\"<%= posts[i].imageAlt %>\" style=\"height: 75px;\" />\n    </div>\n    <div class=\"blog-information\">\n    <h3 class=\"blog-post-title\"><%= posts[i].title %></h3>\n    <p><a class=\"post-author-name\" href=\"<%= posts[i].authorLink %>\"><%= posts[i].authorName %></a></p>\n    </div>\n  </div>\n<% } %>", {
-        posts: posts
+    Templates.renderPosts = function(posts, numberOfPosts) {
+      if (numberOfPosts == null) {
+        numberOfPosts = posts.length;
+      }
+      if (numberOfPosts > posts.length) {
+        numberOfPosts = posts.length;
+      }
+      return _.template("<% for (var i = 0; i < numberOfPosts; i++){ %>\n  <div class=\"blog-post\">\n    <div class=\"blog-image-container\">\n      <img class=\"blog-image\" src=\"<%= posts[i].imageSrc %>\" alt=\"<%= posts[i].imageAlt %>\" style=\"height: 75px;\" />\n    </div>\n    <div class=\"blog-information\">\n    <h3 class=\"blog-post-title\"><%= posts[i].title %></h3>\n    <p><a class=\"post-author-name\" href=\"<%= posts[i].authorLink %>\"><%= posts[i].authorName %></a></p>\n    </div>\n  </div>\n<% } %>", {
+        posts: posts,
+        numberOfPosts: numberOfPosts
       });
     };
 

@@ -16,9 +16,11 @@ class Blog.Widgets.Templates
       </div>
     """)
 
-  @renderPosts: (posts) ->
+  @renderPosts: (posts, numberOfPosts = posts.length) ->
+    if numberOfPosts > posts.length
+      numberOfPosts = posts.length
     _.template("""
-    <% for (var i = 0; i < posts.length; i++){ %>
+    <% for (var i = 0; i < numberOfPosts; i++){ %>
       <div class="blog-post">
         <div class="blog-image-container">
           <img class="blog-image" src="<%= posts[i].imageSrc %>" alt="<%= posts[i].imageAlt %>" style="height: 75px;" />
@@ -29,4 +31,4 @@ class Blog.Widgets.Templates
         </div>
       </div>
     <% } %>
-    """, {posts: posts})
+    """, {posts: posts, numberOfPosts: numberOfPosts})

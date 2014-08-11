@@ -51,3 +51,21 @@ describe 'Blog.Widgets.Templates', ->
     $('#sandbox').append(postsHtml)
     expect($('.blog-post-title')[0]).toContainText('Title 1')
     expect($('.blog-post-title')[1]).toContainText('Title 2')
+
+  it "renderPosts is rendering the number of posts that the limit implies", ->
+    setFixtures sandbox()
+    display = new Blog.Widgets.Display('#sandbox')
+    formatedPosts = display.formatAllPosts(mockPosts)
+    postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, 1)
+    $('#sandbox').append(postsHtml)
+    expect($('.blog-post-title')[0]).toContainText('Title 1')
+    expect($('.blog-post-title')[1]).not.toContainText('Title 2')
+
+  it "renderPosts is stops rendering if limit is greater than number of posts", ->
+    setFixtures sandbox()
+    display = new Blog.Widgets.Display('#sandbox')
+    formatedPosts = display.formatAllPosts(mockPosts)
+    postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, 5)
+    $('#sandbox').append(postsHtml)
+    expect($('.blog-post-title').length).toBe(2)
+

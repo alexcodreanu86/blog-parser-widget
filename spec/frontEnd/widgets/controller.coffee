@@ -1,5 +1,6 @@
+numberOfPosts = 2
 newController = (container, defaultValue) ->
-  new Blog.Widgets.Controller({container: container, defaultValue: defaultValue})
+  new Blog.Widgets.Controller({container: container, defaultValue: defaultValue, numberOfPosts: numberOfPosts})
 
 container = '[data-id=container1]'
 setupOneContainer = ->
@@ -40,7 +41,7 @@ describe "Blog.Widgets.Controller", ->
   it "stores a new instance of Blog.Widgets.Display", ->
     spy = spyOn(Blog.Widgets, 'Display').and.callThrough()
     controller = newController('some-container')
-    expect(spy).toHaveBeenCalledWith('some-container')
+    expect(spy).toHaveBeenCalledWith('some-container', numberOfPosts)
     expect(controller.display).toBeDefined()
 
   describe "initialize", ->
