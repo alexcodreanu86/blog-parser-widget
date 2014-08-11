@@ -23,7 +23,7 @@ class Blog.Widgets.Templates
     <% for (var i = 0; i < numberOfPosts; i++){ %>
       <div class="blog-post">
         <div class="blog-image-container">
-          <img class="blog-image" src="<%= posts[i].imageSrc %>" alt="<%= posts[i].imageAlt %>" style="height: 75px;" />
+          <img class="blog-image" src="<%= posts[i].imageSrc %>" alt="<%= posts[i].imageAlt %>"/>
         </div>
         <div class="blog-information">
         <h3 class="blog-post-title"><%= posts[i].title %></h3>
