@@ -109,7 +109,7 @@
     function Controller(settings) {
       this.container = settings.container;
       this.defaultValue = settings.defaultValue;
-      this.display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts);
+      this.display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts, settings.animationSpeed);
       this.activeStatus = false;
     }
 
@@ -194,9 +194,10 @@
   namespace('Blog.Widgets');
 
   Blog.Widgets.Display = (function() {
-    function Display(container, numberOfPosts) {
+    function Display(container, numberOfPosts, animationSpeed) {
       this.container = container;
       this.numberOfPosts = numberOfPosts;
+      this.animationSpeed = animationSpeed;
     }
 
     Display.prototype.setupWidget = function() {
@@ -246,11 +247,11 @@
     };
 
     Display.prototype.hideForm = function() {
-      return $("" + this.container + " [data-id=blog-form]").hide();
+      return $("" + this.container + " [data-id=blog-form]").hide(this.animationSpeed);
     };
 
     Display.prototype.hideCloseWidgetButton = function() {
-      return $("" + this.container + " [data-id=blog-close]").hide();
+      return $("" + this.container + " [data-id=blog-close]").hide(this.animationSpeed);
     };
 
     Display.prototype.enterEditMode = function() {
@@ -259,11 +260,11 @@
     };
 
     Display.prototype.showForm = function() {
-      return $("" + this.container + " [data-id=blog-form]").show();
+      return $("" + this.container + " [data-id=blog-form]").show(this.animationSpeed);
     };
 
     Display.prototype.showCloseWidgetButton = function() {
-      return $("" + this.container + " [data-id=blog-close]").show();
+      return $("" + this.container + " [data-id=blog-close]").show(this.animationSpeed);
     };
 
     return Display;

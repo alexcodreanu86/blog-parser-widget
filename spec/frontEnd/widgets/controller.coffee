@@ -40,8 +40,8 @@ describe "Blog.Widgets.Controller", ->
 
   it "stores a new instance of Blog.Widgets.Display", ->
     spy = spyOn(Blog.Widgets, 'Display').and.callThrough()
-    controller = newController('some-container')
-    expect(spy).toHaveBeenCalledWith('some-container', numberOfPosts)
+    controller = new Blog.Widgets.Controller({container: 'some-container', numberOfPosts: numberOfPosts, animationSpeed: 300 })
+    expect(spy).toHaveBeenCalledWith('some-container', numberOfPosts, 300)
     expect(controller.display).toBeDefined()
 
   describe "initialize", ->

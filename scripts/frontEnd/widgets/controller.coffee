@@ -4,7 +4,7 @@ class Blog.Widgets.Controller
   constructor: (settings) ->
     @container = settings.container
     @defaultValue = settings.defaultValue
-    @display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts)
+    @display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts, settings.animationSpeed)
     @activeStatus = false
 
   getContainer: ->

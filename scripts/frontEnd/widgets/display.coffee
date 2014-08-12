@@ -1,9 +1,10 @@
 namespace('Blog.Widgets')
 
 class Blog.Widgets.Display
-  constructor: (container, numberOfPosts) ->
+  constructor: (container, numberOfPosts, animationSpeed) ->
     @container = container
     @numberOfPosts = numberOfPosts
+    @animationSpeed = animationSpeed
 
   setupWidget: ->
     widgetHtml = Blog.Widgets.Templates.renderForm()
@@ -40,17 +41,17 @@ class Blog.Widgets.Display
     @hideCloseWidgetButton()
 
   hideForm: ->
-    $("#{@container} [data-id=blog-form]").hide()
+    $("#{@container} [data-id=blog-form]").hide(@animationSpeed)
 
   hideCloseWidgetButton: ->
-    $("#{@container} [data-id=blog-close]").hide()
+    $("#{@container} [data-id=blog-close]").hide(@animationSpeed)
 
   enterEditMode: ->
     @showForm()
     @showCloseWidgetButton()
 
   showForm: ->
-    $("#{@container} [data-id=blog-form]").show()
+    $("#{@container} [data-id=blog-form]").show(@animationSpeed)
 
   showCloseWidgetButton: ->
-    $("#{@container} [data-id=blog-close]").show()
+    $("#{@container} [data-id=blog-close]").show(@animationSpeed)
