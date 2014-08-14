@@ -146,3 +146,49 @@ describe "Blog.Widgets.Controller", ->
       controller.unbind()
       $('[data-id=blog-close]').click()
       expect($(container)).toBeInDOM()
+
+  describe "refreshBlogs", ->
+    controller = undefined
+    spy        = undefined
+    oneMinute  = 60 * 1000
+
+    newRefreshController = (container, refreshRate) ->
+      new Blog.Widgets.Controller({container: container, numberOfPosts: numberOfPosts, refreshRate: refreshRate})
+
+    beforeEach ->
+      controller = newRefreshController(container, 50)
+      controller.setAsActive()
+      spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
+      jasmine.clock().install()
+
+    afterEach ->
+      jasmine.clock().uninstall()
+
+    it "doesn't refresh when no refresh rate is provided", ->
+      controller = newRefreshController(container, undefined)
+      controller.getBlogPosts('some/url/here')
+      expect(spy.calls.count()).toBe(1)
+      jasmine.clock().tick(oneMinute)
+      expect(spy.calls.count()).toBe(1)
+
+    it "refreshes when a refresh value is given", ->
+      controller.getBlogPosts('some/url/here')
+      expect(spy.calls.count()).toBe(1)
+      jasmine.clock().tick(oneMinute)
+      expect(spy.calls.count()).toBe(2)
+
+    it "will not refresh if widget is closed", ->
+      controller.getBlogPosts('some/url/here')
+      expect(spy.calls.count()).toBe(1)
+      controller.closeWidget()
+      jasmine.clock().tick(oneMinute)
+      expect(spy.calls.count()).toBe(1)
+
+    it "will refresh only for the newest search", ->
+      controller.getBlogPosts('some/url/here')
+      expect(spy.calls.argsFor(0)[0]).toEqual('some/url/here')
+      controller.getBlogPosts('some/other/url/here')
+      expect(spy.calls.argsFor(1)[0]).toEqual('some/other/url/here')
+      jasmine.clock().tick(oneMinute)
+      expect(spy.calls.argsFor(2)[0]).toEqual('some/other/url/here')
+      expect(spy.calls.count()).toBe(3)

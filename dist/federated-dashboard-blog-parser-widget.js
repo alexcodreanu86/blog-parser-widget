@@ -110,6 +110,7 @@
       this.container = settings.container;
       this.defaultValue = settings.defaultValue;
       this.display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts, settings.animationSpeed);
+      this.refreshRate = settings.refreshRate;
       this.activeStatus = false;
     }
 
@@ -155,7 +156,31 @@
     };
 
     Controller.prototype.getBlogPosts = function(input) {
-      return Blog.Widgets.Api.getBlogPosts(input, this.display);
+      Blog.Widgets.Api.getBlogPosts(input, this.display);
+      if (this.refreshRate) {
+        this.clearCurrentTimeout();
+        return this.refreshBlogPosts(input);
+      }
+    };
+
+    Controller.prototype.clearCurrentTimeout = function() {
+      if (this.timeout) {
+        return clearTimeout(this.timeout);
+      }
+    };
+
+    Controller.prototype.refreshBlogPosts = function(input) {
+      return this.timeout = setTimeout((function(_this) {
+        return function() {
+          if (_this.isActive()) {
+            return _this.getBlogPosts(input);
+          }
+        };
+      })(this), this.refreshSeconds());
+    };
+
+    Controller.prototype.refreshSeconds = function() {
+      return this.refreshRate * 1000;
     };
 
     Controller.prototype.displayDefault = function() {

@@ -2,9 +2,10 @@ namespace("Blog.Widgets")
 
 class Blog.Widgets.Controller
   constructor: (settings) ->
-    @container = settings.container
+    @container    = settings.container
     @defaultValue = settings.defaultValue
-    @display = new Blog.Widgets.Display(settings.container, settings.numberOfPosts, settings.animationSpeed)
+    @display      = new Blog.Widgets.Display(settings.container, settings.numberOfPosts, settings.animationSpeed)
+    @refreshRate  = settings.refreshRate
     @activeStatus = false
 
   getContainer: ->
@@ -35,6 +36,20 @@ class Blog.Widgets.Controller
 
   getBlogPosts: (input) ->
     Blog.Widgets.Api.getBlogPosts(input, @display)
+    if @refreshRate
+      @clearCurrentTimeout()
+      @refreshBlogPosts(input)
+
+  clearCurrentTimeout: ->
+    clearTimeout(@timeout) if @timeout
+
+  refreshBlogPosts: (input) ->
+    @timeout = setTimeout( =>
+      @getBlogPosts(input) if @isActive()
+    , @refreshSeconds())
+
+  refreshSeconds: ->
+    @refreshRate * 1000
 
   displayDefault: ->
     if @defaultValue
