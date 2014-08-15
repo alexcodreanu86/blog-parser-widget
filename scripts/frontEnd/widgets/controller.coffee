@@ -32,7 +32,8 @@ class Blog.Widgets.Controller
 
   processClickedButton: ->
     input = @display.getInput()
-    @getBlogPosts(input)
+    if Blog.Widgets.Validator.isValidUrl(input)
+      @getBlogPosts(input)
 
   getBlogPosts: (input) ->
     Blog.Widgets.Api.getBlogPosts(input, @display)

@@ -28,7 +28,9 @@ mockPosts = [
   }
 ]
 
-jsonResponse = JSON.stringify(mockPosts)
+jsonResponse  = JSON.stringify(mockPosts)
+validUrl      = "http://some.com/url/here"
+invalidUrl    = "some.com/url/here"
 
 clickButtonIn = (container) ->
   $("#{container} blog-button").click()
@@ -58,11 +60,12 @@ describe "Blog.Widgets.Controller", ->
       controller.initialize()
       server = sinon.fakeServer.create()
       server.respondWith(/.+/, jsonResponse)
-      $('[name=blog-search]').val('some/url/here')
+      $('[name=blog-search]').val(validUrl)
       $('[data-id=blog-button]').click()
       server.respond()
       expect($('.blog-post')).toBeInDOM()
       server.restore()
+
 
     it "is setting the widget as active", ->
       controller.initialize()
@@ -80,15 +83,34 @@ describe "Blog.Widgets.Controller", ->
       controller.initialize()
       expect(spy).not.toHaveBeenCalled()
 
+  describe "processClickedButton", ->
+    it "is not searching getting blog posts if url is invalid", ->
+      setupOneContainer()
+      controller = newController(container)
+      controller.initialize()
+      spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
+      $('[name=blog-search]').val(invalidUrl)
+      controller.processClickedButton()
+      expect(spy).not.toHaveBeenCalled()
+
+    it "is not searching getting blog posts if url is invalid", ->
+      setupOneContainer()
+      controller = newController(container)
+      controller.initialize()
+      spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
+      $('[name=blog-search]').val(validUrl)
+      controller.processClickedButton()
+      expect(spy).toHaveBeenCalled()
+
   describe "bind", ->
     it "is calling api with the url in the input field and the display", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
-      $('[name=blog-search]').val('some/url/here')
+      $('[name=blog-search]').val(validUrl)
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
       $('[data-id=blog-button]').click()
-      expect(spy).toHaveBeenCalledWith('some/url/here', controller.display)
+      expect(spy).toHaveBeenCalledWith(validUrl, controller.display)
 
     it "removes the widget when close widget button is clicked", ->
       setupOneContainer()
@@ -192,3 +214,4 @@ describe "Blog.Widgets.Controller", ->
       jasmine.clock().tick(oneMinute)
       expect(spy.calls.argsFor(2)[0]).toEqual('some/other/url/here')
       expect(spy.calls.count()).toBe(3)
+

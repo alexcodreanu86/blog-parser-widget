@@ -152,7 +152,9 @@
     Controller.prototype.processClickedButton = function() {
       var input;
       input = this.display.getInput();
-      return this.getBlogPosts(input);
+      if (Blog.Widgets.Validator.isValidUrl(input)) {
+        return this.getBlogPosts(input);
+      }
     };
 
     Controller.prototype.getBlogPosts = function(input) {
@@ -322,6 +324,46 @@
     };
 
     return Templates;
+
+  })();
+
+}).call(this);
+
+(function() {
+  namespace('Blog.Widgets');
+
+  Blog.Widgets.Validator = (function() {
+    function Validator() {}
+
+    Validator.isValidUrl = function(url) {
+      return new Boolean(this.matchUrl(url));
+    };
+
+    Validator.matchUrl = function(url) {
+      return url.match(/http\:\/\/\w+\.\w+/);
+    };
+
+    return Validator;
+
+  })();
+
+}).call(this);
+
+(function() {
+  namespace('Blog.Widgets');
+
+  Blog.Widgets.Validator = (function() {
+    function Validator() {}
+
+    Validator.isValidUrl = function(url) {
+      return !!this.matchUrl(url);
+    };
+
+    Validator.matchUrl = function(url) {
+      return url.match(/http\:\/\/\w+\.\w+/);
+    };
+
+    return Validator;
 
   })();
 
