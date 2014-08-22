@@ -40,12 +40,12 @@
       return this.widgets.push(newWidget);
     };
 
-    Controller.hideForms = function() {
-      return this.allActiveWidgetsExecute('hideForm');
+    Controller.exitEditMode = function() {
+      return this.allActiveWidgetsExecute('exitEditMode');
     };
 
-    Controller.showForms = function() {
-      return this.allActiveWidgetsExecute('showForm');
+    Controller.enterEditMode = function() {
+      return this.allActiveWidgetsExecute('enterEditMode');
     };
 
     Controller.allActiveWidgetsExecute = function(command) {
@@ -203,11 +203,11 @@
       return this.activeStatus = false;
     };
 
-    Controller.prototype.hideForm = function() {
+    Controller.prototype.exitEditMode = function() {
       return this.display.exitEditMode();
     };
 
-    Controller.prototype.showForm = function() {
+    Controller.prototype.enterEditMode = function() {
       return this.display.enterEditMode();
     };
 

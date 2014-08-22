@@ -14,11 +14,11 @@ class Blog.Controller
   @addWidgetToContainer: (newWidget) ->
     @widgets.push(newWidget)
 
-  @hideForms: ->
-    @allActiveWidgetsExecute('hideForm')
+  @exitEditMode: ->
+    @allActiveWidgetsExecute('exitEditMode')
 
-  @showForms: ->
-    @allActiveWidgetsExecute('showForm')
+  @enterEditMode: ->
+    @allActiveWidgetsExecute('enterEditMode')
 
   @allActiveWidgetsExecute: (command) ->
     _.each(@widgets, (widget)  =>

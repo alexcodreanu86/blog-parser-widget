@@ -135,20 +135,20 @@ describe "Blog.Widgets.Controller", ->
     controller.closeWidget()
     expect(controller.unbind).toHaveBeenCalled()
 
-  it "hideForm is hiding the form", ->
+  it "exitEditMode is hiding the form", ->
     setupOneContainer()
     controller = newController(container)
     controller.initialize()
-    controller.hideForm()
+    controller.exitEditMode()
     expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
 
-  it "showForm is showing the form" , ->
+  it "enterEditMode is showing the form" , ->
     setupOneContainer()
     controller = newController(container)
     controller.initialize()
-    controller.hideForm()
+    controller.exitEditMode()
     expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
-    controller.showForm()
+    controller.enterEditMode()
     expect($('[data-id=blog-form]').attr('style')).not.toEqual('display: none;')
 
   describe "unbind", ->

@@ -65,8 +65,8 @@ class Blog.Widgets.Controller
   setAsInactive: ->
     @activeStatus = false
 
-  hideForm: ->
+  exitEditMode: ->
     @display.exitEditMode()
 
-  showForm: ->
+  enterEditMode: ->
     @display.enterEditMode()

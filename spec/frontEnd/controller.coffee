@@ -29,24 +29,24 @@ describe "Blog.Controller", ->
     Blog.Controller.setupWidgetIn({container: container1})
     expect(Blog.Controller.getWidgets().length).toBe(1)
 
-  it "hideForms is hiding the forms of all the active widgets", ->
+  it "exitEditMode is hiding the forms of all the active widgets", ->
     resetWidgets()
     setupTwoContainers()
     Blog.Controller.setupWidgetIn({container: container1})
     Blog.Controller.setupWidgetIn({container: container2})
-    Blog.Controller.hideForms()
+    Blog.Controller.exitEditMode()
     expect($("#{container1} [data-id=blog-close]").attr('style')).toEqual('display: none;')
     expect($("#{container2} [data-id=blog-close]").attr('style')).toEqual('display: none;')
 
-  it "showForms is showing the forms of all the active widgets", ->
+  it "enterEditMode is showing the forms of all the active widgets", ->
     resetWidgets()
     setupTwoContainers()
     Blog.Controller.setupWidgetIn({container: container1})
     Blog.Controller.setupWidgetIn({container: container2})
-    Blog.Controller.hideForms()
+    Blog.Controller.exitEditMode()
     expect($("#{container1} [data-id=blog-close]").attr('style')).toEqual('display: none;')
     expect($("#{container2} [data-id=blog-close]").attr('style')).toEqual('display: none;')
-    Blog.Controller.showForms()
+    Blog.Controller.enterEditMode()
     expect($("#{container1} [data-id=blog-close]").attr('style')).not.toEqual('display: none;')
     expect($("#{container2} [data-id=blog-close]").attr('style')).not.toEqual('display: none;')
 
