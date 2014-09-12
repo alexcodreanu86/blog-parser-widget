@@ -39,7 +39,6 @@
     });
     return req.on('end', function() {
       url = JSON.parse(urlData).url;
-      console.log(url);
       return processRequest(url, res);
     });
   });
@@ -61,6 +60,7 @@
       return _results;
     });
     return feedParser.on('end', function() {
+      console.log(data[2]);
       return response.send(data);
     });
   };

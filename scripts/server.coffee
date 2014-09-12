@@ -23,7 +23,6 @@ app.post '/blog_feed', (req, res) ->
   )
   req.on('end', ->
     url = JSON.parse(urlData).url
-    console.log url
     processRequest(url, res)
   )
 
@@ -40,6 +39,7 @@ processRequest = (url, response) ->
   )
 
   feedParser.on('end', ->
+    console.log data[2]
     response.send(data)
   )
 

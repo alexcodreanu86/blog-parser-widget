@@ -40,7 +40,7 @@ describe 'Blog.Widgets.Templates', ->
     expect($('.blog-post-title')).toContainText('Title 1')
     expect($('.blog-image').attr('src')).toEqual('spec/mockImages/001.jpeg')
     expect($('.blog-image').attr('alt')).toEqual('Imaginary Friend1')
-    expect($('.post-author-name').attr('href')).toEqual('link/to/authors/profile')
+    expect($('.post-author-name').attr('href')).toEqual('link to post')
     expect($('.post-author-name')).toContainText('Author 1')
 
   it 'renderPosts is rendering proper html for all the posts', ->

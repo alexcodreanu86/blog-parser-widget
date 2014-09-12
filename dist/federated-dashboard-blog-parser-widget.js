@@ -260,7 +260,6 @@
       formatedPost.blogLink = post.link;
       formatedPost.imageSrc = post.image.url || "https://pbs.twimg.com/profile_images/1378895288/twitter-logo_400x400.png";
       formatedPost.imageAlt = post.image.title;
-      formatedPost.authorLink = post.image.link;
       return formatedPost;
     };
 
@@ -317,7 +316,7 @@
       if (numberOfPosts > posts.length) {
         numberOfPosts = posts.length;
       }
-      return _.template("<% for (var i = 0; i < numberOfPosts; i++){ %>\n  <div class=\"blog-post\">\n    <div class=\"blog-image-container\">\n      <img class=\"blog-image\" src=\"<%= posts[i].imageSrc %>\" alt=\"<%= posts[i].imageAlt %>\"/>\n    </div>\n    <div class=\"blog-information\">\n    <h3 class=\"blog-post-title\"><%= posts[i].title %></h3>\n    <p><a class=\"post-author-name\" href=\"<%= posts[i].authorLink %>\"><%= posts[i].authorName %></a></p>\n    </div>\n  </div>\n<% } %>", {
+      return _.template("<% for (var i = 0; i < numberOfPosts; i++){ %>\n  <div class=\"blog-post\">\n    <div class=\"blog-image-container\">\n      <img class=\"blog-image\" src=\"<%= posts[i].imageSrc %>\" alt=\"<%= posts[i].imageAlt %>\"/>\n    </div>\n    <div class=\"blog-information\">\n    <h3 class=\"blog-post-title\"><%= posts[i].title %></h3>\n    <p><a class=\"post-author-name\" href=\"<%= posts[i].blogLink %>\"><%= posts[i].authorName %></a></p>\n    </div>\n  </div>\n<% } %>", {
         posts: posts,
         numberOfPosts: numberOfPosts
       });

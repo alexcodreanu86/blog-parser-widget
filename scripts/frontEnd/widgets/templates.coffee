@@ -27,7 +27,7 @@ class Blog.Widgets.Templates
         </div>
         <div class="blog-information">
         <h3 class="blog-post-title"><%= posts[i].title %></h3>
-        <p><a class="post-author-name" href="<%= posts[i].authorLink %>"><%= posts[i].authorName %></a></p>
+        <p><a class="post-author-name" href="<%= posts[i].blogLink %>"><%= posts[i].authorName %></a></p>
         </div>
       </div>
     <% } %>

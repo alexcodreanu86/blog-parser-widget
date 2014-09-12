@@ -11,7 +11,6 @@ mockPosts = [
     image: {
       url: 'spec/mockImages/001.jpeg',
       title: 'Imaginary Friend1',
-      link: 'link/to/authors/profile'
     }
   },{
     title: 'Title 2',
@@ -20,7 +19,6 @@ mockPosts = [
     image: {
       url: 'spec/mockImages/002.jpeg',
       title: 'Imaginary Friend2',
-      link: 'link/to/authors/profile'
     }
   }
 ]
@@ -84,7 +82,6 @@ describe 'Blog.Widgets.Display', ->
     expect(formatedPost.blogLink).toEqual('link to post')
     expect(formatedPost.imageSrc).toEqual('spec/mockImages/001.jpeg')
     expect(formatedPost.imageAlt).toEqual('Imaginary Friend1')
-    expect(formatedPost.authorLink).toEqual('link/to/authors/profile')
 
   it 'removeWidget is removing the widget content from the dom', ->
     setupOneContainer()

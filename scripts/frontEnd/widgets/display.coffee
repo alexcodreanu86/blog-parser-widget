@@ -30,7 +30,6 @@ class Blog.Widgets.Display
     formatedPost.blogLink   = post.link
     formatedPost.imageSrc   = post.image.url || "https://pbs.twimg.com/profile_images/1378895288/twitter-logo_400x400.png"
     formatedPost.imageAlt   = post.image.title
-    formatedPost.authorLink = post.image.link
     formatedPost
 
   removeWidget: ->
