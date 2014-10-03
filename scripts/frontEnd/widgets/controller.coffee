@@ -8,9 +8,6 @@ class Blog.Widgets.Controller
     @refreshRate  = settings.refreshRate
     @activeStatus = false
 
-  getContainer: ->
-    @container
-
   initialize: ->
     @display.setupWidget()
     @bind()
@@ -18,12 +15,14 @@ class Blog.Widgets.Controller
     @displayDefault()
 
   bind: ->
-    $("#{@container} [data-id=blog-button]").click( => @processClickedButton())
-    $("#{@container} [data-id=blog-close]").click( => @closeWidget())
+    $("#{@container} [data-name=widget-form]").on 'submit', (e) =>
+      e.preventDefault()
+      @processClickedButton()
+    $("#{@container} [data-name=widget-close]").click( => @closeWidget())
 
   unbind: ->
-    $("#{@container} [data-id=blog-button]").unbind('click')
-    $("#{@container} [data-id=blog-close]").unbind('click')
+    $("#{@container} [data-name=widget-form]").unbind('submit')
+    $("#{@container} [data-name=widget-close]").unbind('click')
 
   closeWidget: ->
     @display.removeWidget()
@@ -64,9 +63,3 @@ class Blog.Widgets.Controller
 
   setAsInactive: ->
     @activeStatus = false
-
-  exitEditMode: ->
-    @display.exitEditMode()
-
-  enterEditMode: ->
-    @display.enterEditMode()

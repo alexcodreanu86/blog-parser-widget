@@ -23,39 +23,8 @@
   Blog.Controller = (function() {
     function Controller() {}
 
-    Controller.widgets = [];
-
-    Controller.getWidgets = function() {
-      return this.widgets;
-    };
-
     Controller.setupWidgetIn = function(settings) {
-      var newWidget;
-      newWidget = new Blog.Widgets.Controller(settings);
-      newWidget.initialize();
-      return this.addWidgetToContainer(newWidget);
-    };
-
-    Controller.addWidgetToContainer = function(newWidget) {
-      return this.widgets.push(newWidget);
-    };
-
-    Controller.exitEditMode = function() {
-      return this.allActiveWidgetsExecute('exitEditMode');
-    };
-
-    Controller.enterEditMode = function() {
-      return this.allActiveWidgetsExecute('enterEditMode');
-    };
-
-    Controller.allActiveWidgetsExecute = function(command) {
-      return _.each(this.widgets, (function(_this) {
-        return function(widget) {
-          if (widget.isActive()) {
-            return widget[command]();
-          }
-        };
-      })(this));
+      return new Blog.Widgets.Controller(settings).initialize();
     };
 
     return Controller;
@@ -114,10 +83,6 @@
       this.activeStatus = false;
     }
 
-    Controller.prototype.getContainer = function() {
-      return this.container;
-    };
-
     Controller.prototype.initialize = function() {
       this.display.setupWidget();
       this.bind();
@@ -126,12 +91,13 @@
     };
 
     Controller.prototype.bind = function() {
-      $("" + this.container + " [data-id=blog-button]").click((function(_this) {
-        return function() {
+      $("" + this.container + " [data-name=widget-form]").on('submit', (function(_this) {
+        return function(e) {
+          e.preventDefault();
           return _this.processClickedButton();
         };
       })(this));
-      return $("" + this.container + " [data-id=blog-close]").click((function(_this) {
+      return $("" + this.container + " [data-name=widget-close]").click((function(_this) {
         return function() {
           return _this.closeWidget();
         };
@@ -139,8 +105,8 @@
     };
 
     Controller.prototype.unbind = function() {
-      $("" + this.container + " [data-id=blog-button]").unbind('click');
-      return $("" + this.container + " [data-id=blog-close]").unbind('click');
+      $("" + this.container + " [data-name=widget-form]").unbind('submit');
+      return $("" + this.container + " [data-name=widget-close]").unbind('click');
     };
 
     Controller.prototype.closeWidget = function() {
@@ -203,14 +169,6 @@
       return this.activeStatus = false;
     };
 
-    Controller.prototype.exitEditMode = function() {
-      return this.display.exitEditMode();
-    };
-
-    Controller.prototype.enterEditMode = function() {
-      return this.display.enterEditMode();
-    };
-
     return Controller;
 
   })();
@@ -234,14 +192,14 @@
     };
 
     Display.prototype.getInput = function() {
-      return $("" + this.container + " [name=blog-search]").val();
+      return $("" + this.container + " [name=widget-input]").val();
     };
 
     Display.prototype.showPosts = function(posts) {
       var formatedPosts, postsHtml;
       formatedPosts = this.formatAllPosts(posts);
       postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, this.numberOfPosts);
-      return $("" + this.container + " [data-id=blog-output]").html(postsHtml);
+      return $("" + this.container + " [data-name=widget-output]").html(postsHtml);
     };
 
     Display.prototype.formatAllPosts = function(posts) {
@@ -267,32 +225,6 @@
       return $(this.container).remove();
     };
 
-    Display.prototype.exitEditMode = function() {
-      this.hideForm();
-      return this.hideCloseWidgetButton();
-    };
-
-    Display.prototype.hideForm = function() {
-      return $("" + this.container + " [data-id=blog-form]").hide(this.animationSpeed);
-    };
-
-    Display.prototype.hideCloseWidgetButton = function() {
-      return $("" + this.container + " [data-id=blog-close]").hide(this.animationSpeed);
-    };
-
-    Display.prototype.enterEditMode = function() {
-      this.showForm();
-      return this.showCloseWidgetButton();
-    };
-
-    Display.prototype.showForm = function() {
-      return $("" + this.container + " [data-id=blog-form]").show(this.animationSpeed);
-    };
-
-    Display.prototype.showCloseWidgetButton = function() {
-      return $("" + this.container + " [data-id=blog-close]").show(this.animationSpeed);
-    };
-
     return Display;
 
   })();
@@ -306,7 +238,7 @@
     function Templates() {}
 
     Templates.renderForm = function() {
-      return _.template("<div class=\"widget\" data-id=\"blog-widget-wrapper\">\n  <div class=\"widget-header\">\n    <h2 class=\"widget-title\">Blog Posts</h2>\n    <span class='widget-close' data-id='blog-close'>×</span>\n      <div class=\"widget-form\" data-id=\"blog-form\">\n        <input name=\"blog-search\" type=\"text\" autofocus=\"true\">\n        <button id=\"blog\" data-id=\"blog-button\">Search blog</button><br>\n      </div>\n    </div>\n  <div class=\"widget-body\" data-id=\"blog-output\"></div>\n</div>");
+      return _.template("<div class='widget' data-name='widget-wrapper'>\n  <div class='widget-header' data-name='sortable-handle'>\n    <h2 class=\"widget-title\">Blog Posts</h2>\n    <span class='widget-close' data-name='widget-close'>×</span>\n    <form class='widget-form' data-name='widget-form'>\n      <input name='widget-input' type='text' autofocus='true'>\n      <button data-name=\"form-button\">Search Blog</button><br>\n    </form>\n  </div>\n  <div class=\"widget-body\" data-name=\"widget-output\"></div>\n</div>", {});
     };
 
     Templates.renderPosts = function(posts, numberOfPosts) {

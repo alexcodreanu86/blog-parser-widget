@@ -47,7 +47,7 @@ describe 'Blog.Widgets.Display', ->
     setupOneContainer()
     display = newDisplay(container1)
     display.setupWidget()
-    $('[name=blog-search]').val('some-value-here')
+    $('[name=widget-input]').val('some-value-here')
     expect(display.getInput()).toEqual('some-value-here')
 
   it 'getInput returns the value of the input in it\'s container', ->
@@ -56,8 +56,8 @@ describe 'Blog.Widgets.Display', ->
     display2 = newDisplay(container2)
     display1.setupWidget()
     display2.setupWidget()
-    $("#{container1} [name=blog-search]").val('value1')
-    $("#{container2} [name=blog-search]").val('value2')
+    $("#{container1} [name=widget-input]").val('value1')
+    $("#{container2} [name=widget-input]").val('value2')
     expect(display1.getInput()).toEqual('value1')
     expect(display2.getInput()).toEqual('value2')
 
@@ -90,35 +90,3 @@ describe 'Blog.Widgets.Display', ->
     expect($(container1)).toContainElement('.widget .widget-header')
     display.removeWidget()
     expect($(container1)).not.toBeInDOM()
-
-  it "exitEditMode is hiding the form", ->
-    setupOneContainer()
-    display = newDisplay container1
-    display.setupWidget()
-    display.exitEditMode()
-    expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
-
-  it "exitEditMode is hiding the close-button", ->
-    setupOneContainer()
-    display = newDisplay container1
-    display.setupWidget()
-    display.exitEditMode()
-    expect($('[data-id=blog-close]').attr('style')).toEqual('display: none;')
-
-  it "enterEditMode is showing the form", ->
-    setupOneContainer()
-    display = newDisplay container1
-    display.setupWidget()
-    display.exitEditMode()
-    expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
-    display.enterEditMode()
-    expect($('[data-id=blog-form]').attr('style')).not.toEqual('display: none;')
-
-  it "enterEditMode is showing the close-button", ->
-    setupOneContainer()
-    display = newDisplay container1
-    display.setupWidget()
-    display.exitEditMode()
-    expect($('[data-id=blog-close]').attr('style')).toEqual('display: none;')
-    display.enterEditMode()
-    expect($('[data-id=blog-close]').attr('style')).not.toEqual('display: none;')

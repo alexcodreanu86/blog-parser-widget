@@ -32,13 +32,10 @@ jsonResponse  = JSON.stringify(mockPosts)
 validUrl      = "http://some.com/url/here"
 invalidUrl    = "some.com/url/here"
 
-clickButtonIn = (container) ->
-  $("#{container} blog-button").click()
-
 describe "Blog.Widgets.Controller", ->
   it "stores the container that it is initialized with", ->
     controller = newController('some-container')
-    expect(controller.getContainer()).toEqual('some-container')
+    expect(controller.container).toEqual('some-container')
 
   it "stores a new instance of Blog.Widgets.Display", ->
     spy = spyOn(Blog.Widgets, 'Display').and.callThrough()
@@ -60,74 +57,74 @@ describe "Blog.Widgets.Controller", ->
       controller.initialize()
       server = sinon.fakeServer.create()
       server.respondWith(/.+/, jsonResponse)
-      $('[name=blog-search]').val(validUrl)
-      $('[data-id=blog-button]').click()
+      $('[name=widget-input]').val(validUrl)
+      $('[data-name=form-button]').click()
       server.respond()
       expect($('.blog-post')).toBeInDOM()
       server.restore()
 
 
-    it "is setting the widget as active", ->
+    it "sets the widget as active", ->
       controller.initialize()
       expect(controller.isActive()).toBe(true)
 
-    it "is displaying data if a default value is provided", ->
+    it "displayes data if a default value is provided", ->
       controller = newController(container, "defaultValue")
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
       controller.initialize()
       expect(spy).toHaveBeenCalledWith("defaultValue", controller.display)
 
-    it "is NOT displaying data if a default value is NOT provided", ->
+    it "does NOT display data if a default value is NOT provided", ->
       controller = newController(container)
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
       controller.initialize()
       expect(spy).not.toHaveBeenCalled()
 
   describe "processClickedButton", ->
-    it "is not searching getting blog posts if url is invalid", ->
+    it "gets blog posts if url is invalid", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
-      $('[name=blog-search]').val(invalidUrl)
+      $('[name=widget-input]').val(invalidUrl)
       controller.processClickedButton()
       expect(spy).not.toHaveBeenCalled()
 
-    it "is not searching getting blog posts if url is invalid", ->
+    it "gets blog posts if url is valid", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
-      $('[name=blog-search]').val(validUrl)
+      $('[name=widget-input]').val(validUrl)
       controller.processClickedButton()
       expect(spy).toHaveBeenCalled()
 
   describe "bind", ->
-    it "is calling api with the url in the input field and the display", ->
+    it "calls api with the url in the input field and the display", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
-      $('[name=blog-search]').val(validUrl)
+      $('[name=widget-input]').val(validUrl)
       spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
-      $('[data-id=blog-button]').click()
+      $('[data-name=form-button]').click()
       expect(spy).toHaveBeenCalledWith(validUrl, controller.display)
 
     it "removes the widget when close widget button is clicked", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
-      expect($('[data-id=blog-widget-wrapper]')).toBeInDOM()
-      $('[data-id=blog-close]').click()
-      expect($('[data-id=blog-widget-wrapper]')).not.toBeInDOM()
+      expect($('[data-name=widget-wrapper]')).toBeInDOM()
+      $('[data-name=widget-close]').click()
+      expect($('[data-name=widget-wrapper]')).not.toBeInDOM()
 
-  it "closeWidget is setting the widget as inactive", ->
+  it "closeWidget sets the widget as inactive", ->
     setupOneContainer()
     controller = newController(container)
     controller.initialize()
     controller.closeWidget()
     expect(controller.isActive()).toBe(false)
 
-  it "closeWidget is unbinding the controller", ->
+  it "closeWidget unbinds the controller", ->
     setupOneContainer()
     controller = newController(container)
     controller.initialize()
@@ -135,38 +132,21 @@ describe "Blog.Widgets.Controller", ->
     controller.closeWidget()
     expect(controller.unbind).toHaveBeenCalled()
 
-  it "exitEditMode is hiding the form", ->
-    setupOneContainer()
-    controller = newController(container)
-    controller.initialize()
-    controller.exitEditMode()
-    expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
-
-  it "enterEditMode is showing the form" , ->
-    setupOneContainer()
-    controller = newController(container)
-    controller.initialize()
-    controller.exitEditMode()
-    expect($('[data-id=blog-form]').attr('style')).toEqual('display: none;')
-    controller.enterEditMode()
-    expect($('[data-id=blog-form]').attr('style')).not.toEqual('display: none;')
 
   describe "unbind", ->
-    it "unbind is unbinding the form click event", ->
-      setupOneContainer()
+    it "unbinds the form submit event", ->
       controller = newController(container)
       controller.initialize()
-      spy = spyOn(Blog.Widgets.Api, 'getBlogPosts')
+      spy = spyOn($.prototype, 'unbind')
       controller.unbind()
-      $('[data-id=blog-button]').click()
-      expect(spy).not.toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledWith('submit')
 
-    it "unbind is unbinding the closeWidget click event", ->
+    it "unbinds the closeWidget click event", ->
       setupOneContainer()
       controller = newController(container)
       controller.initialize()
       controller.unbind()
-      $('[data-id=blog-close]').click()
+      $('[data-name=widget-close]').click()
       expect($(container)).toBeInDOM()
 
   describe "refreshBlogs", ->
@@ -186,7 +166,7 @@ describe "Blog.Widgets.Controller", ->
     afterEach ->
       jasmine.clock().uninstall()
 
-    it "doesn't refresh when no refresh rate is provided", ->
+    it "does NOT refresh when no refresh rate is provided", ->
       controller = newRefreshController(container, undefined)
       controller.getBlogPosts('some/url/here')
       expect(spy.calls.count()).toBe(1)
@@ -199,14 +179,14 @@ describe "Blog.Widgets.Controller", ->
       jasmine.clock().tick(oneMinute)
       expect(spy.calls.count()).toBe(2)
 
-    it "will not refresh if widget is closed", ->
+    it "does NOT refresh if widget is closed", ->
       controller.getBlogPosts('some/url/here')
       expect(spy.calls.count()).toBe(1)
       controller.closeWidget()
       jasmine.clock().tick(oneMinute)
       expect(spy.calls.count()).toBe(1)
 
-    it "will refresh only for the newest search", ->
+    it "refreshes only for the newest search", ->
       controller.getBlogPosts('some/url/here')
       expect(spy.calls.argsFor(0)[0]).toEqual('some/url/here')
       controller.getBlogPosts('some/other/url/here')
@@ -214,4 +194,3 @@ describe "Blog.Widgets.Controller", ->
       jasmine.clock().tick(oneMinute)
       expect(spy.calls.argsFor(2)[0]).toEqual('some/other/url/here')
       expect(spy.calls.count()).toBe(3)
-

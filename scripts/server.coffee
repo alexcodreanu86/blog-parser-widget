@@ -2,7 +2,6 @@ express = require('express')
 request = require('request')
 url = require('url')
 FeedParser = require('feedparser')
-BlogXmlParser = require('./.tmp/scripts/backend_module/blogXmlParser.js')
 
 fs = require('fs')
 path = require('path')

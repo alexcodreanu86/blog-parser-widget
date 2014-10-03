@@ -26,9 +26,9 @@ describe 'Blog.Widgets.Templates', ->
     formHtml = Blog.Widgets.Templates.renderForm()
     setFixtures sandbox()
     $('#sandbox').append(formHtml)
-    expect(formHtml).toContainElement('[name=blog-search]')
-    expect(formHtml).toContainElement('[data-id=blog-button]')
-    expect(formHtml).toContainElement('[data-id=blog-output]')
+    expect(formHtml).toContainElement('[name=widget-input]')
+    expect(formHtml).toContainElement('[data-name=form-button]')
+    expect(formHtml).toContainElement('[data-name=widget-output]')
 
   it 'renderPosts is rendering proper html for one post', ->
     setFixtures sandbox()

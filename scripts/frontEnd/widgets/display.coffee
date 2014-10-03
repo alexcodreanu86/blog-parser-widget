@@ -11,12 +11,12 @@ class Blog.Widgets.Display
     $(@container).append(widgetHtml)
 
   getInput: ->
-    $("#{@container} [name=blog-search]").val()
+    $("#{@container} [name=widget-input]").val()
 
   showPosts: (posts) ->
     formatedPosts =  @formatAllPosts(posts)
     postsHtml = Blog.Widgets.Templates.renderPosts(formatedPosts, @numberOfPosts)
-    $("#{@container} [data-id=blog-output]").html(postsHtml)
+    $("#{@container} [data-name=widget-output]").html(postsHtml)
 
   formatAllPosts: (posts) ->
     _.map(posts, (post) =>
@@ -34,23 +34,3 @@ class Blog.Widgets.Display
 
   removeWidget: ->
     $(@container).remove()
-
-  exitEditMode: ->
-    @hideForm()
-    @hideCloseWidgetButton()
-
-  hideForm: ->
-    $("#{@container} [data-id=blog-form]").hide(@animationSpeed)
-
-  hideCloseWidgetButton: ->
-    $("#{@container} [data-id=blog-close]").hide(@animationSpeed)
-
-  enterEditMode: ->
-    @showForm()
-    @showCloseWidgetButton()
-
-  showForm: ->
-    $("#{@container} [data-id=blog-form]").show(@animationSpeed)
-
-  showCloseWidgetButton: ->
-    $("#{@container} [data-id=blog-close]").show(@animationSpeed)

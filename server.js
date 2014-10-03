@@ -1,5 +1,5 @@
 (function() {
-  var BlogXmlParser, FeedParser, app, exports, express, fs, path, processRequest, request, server, url, util;
+  var FeedParser, app, exports, express, fs, path, processRequest, request, server, url, util;
 
   express = require('express');
 
@@ -8,8 +8,6 @@
   url = require('url');
 
   FeedParser = require('feedparser');
-
-  BlogXmlParser = require('./.tmp/scripts/backend_module/blogXmlParser.js');
 
   fs = require('fs');
 
